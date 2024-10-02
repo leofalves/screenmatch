@@ -1,5 +1,6 @@
 package principal;
 
+import model.DadosEpisodio;
 import model.DadosSerie;
 import model.DadosTemporada;
 import services.ConsumoAPI;
@@ -33,5 +34,22 @@ public class Principal {
 			temporadas.add(dadosTemporada);
 		}
 		temporadas.forEach(System.out::println);
+
+
+        /// Loop em todas episódios de todas temporadas
+//        for (int i = 0; i < dadosSerie.totalTemporadas(); i++){
+//            System.out.println("####### Temporada: " + temporadas.get(i).number());
+//            List<DadosEpisodio> episodiosTemporada = temporadas.get(i).episodios();
+//            for (DadosEpisodio dadosEpisodio : episodiosTemporada) {
+//                System.out.println(dadosEpisodio.titulo());
+//            }
+//        }
+
+        /// Fazendo os loops usando lambda
+        temporadas.forEach(t -> {
+            System.out.println("####### Temporada: " + t.number());
+            t.episodios().forEach(e -> System.out.println(e.titulo()));
+        });
+
     }
 }
