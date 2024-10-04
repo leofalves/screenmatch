@@ -7,8 +7,10 @@ import services.ConsumoAPI;
 import services.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -46,10 +48,26 @@ public class Principal {
 //        }
 
         /// Fazendo os loops usando lambda
-        temporadas.forEach(t -> {
-            System.out.println("####### Temporada: " + t.number());
-            t.episodios().forEach(e -> System.out.println(e.titulo()));
-        });
+//        temporadas.forEach(t -> {
+//            System.out.println("####### Temporada: " + t.number());
+//            t.episodios().forEach(e -> System.out.println(e.titulo()));
+//        });
+
+        /// Colocando todos episódios de todas teporadas numa só lista
+
+        List<DadosEpisodio> dadosEpisodios = temporadas
+                .stream()
+                .flatMap(t -> t.episodios().stream())
+                //.toList()  o toList() retorna uma lista imutável, vc não pode adicionar outros itens na lista
+                .collect(Collectors.toList()); // o collect retorna uma lista mutável
+
+        System.out.println("\nTOP 5");
+        dadosEpisodios
+                .stream()
+                .filter(e -> !e.avaliacao().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed()) //ordena pela avaliacao desc
+                .limit(5) // limita em 5 itens
+                .forEach(System.out::println);
 
     }
 }
